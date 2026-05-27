@@ -1,4 +1,4 @@
-# Climatological Data Analysis & ML Feature Engineering (2001–2025)
+# Climatological Data Analysis & ML Feature Engineering (Potiskum 2001–2025)
 
 ## Overview
 This repository contains a data engineering and exploratory data analysis (EDA) pipeline for a 25-year meteorological dataset. The project programmatically transforms denormalized, multi-indexed sensor data into a strict tidy format, engineers temporal features for machine learning, and generates publication-quality diagnostics of thermodynamic and seasonal trends.
