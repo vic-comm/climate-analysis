@@ -8,7 +8,7 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 
 print("Loading daily dataset...")
 # Load the cleaned daily data
-df = pd.read_csv('Cleaned_Daily_Final.csv', parse_dates=['Date'])
+df = pd.read_csv('../data/processed/Cleaned_Daily_Final.csv', parse_dates=['Date'])
 
 # Ensure chronological order (critical for time-series and rolling windows)
 df = df.sort_values('Date').reset_index(drop=True)
