@@ -27,6 +27,7 @@ import seaborn as sns
 from scipy import stats
 from scipy.ndimage import gaussian_filter1d
 import matplotlib.dates as mdates
+import joblib
 
 # ── Palette ───────────────────────────────────────────────────────────────────
 BG    = '#FAFAFA';  DARK  = '#1D3557';  RED  = '#E63946'
@@ -959,14 +960,17 @@ def _export_latex(res_df, path, caption, label):
     print(f"  LaTeX → {path}")
 
 
-# ══════════════════════════════════════════════════════════════════════════════
 # MAIN
-# ══════════════════════════════════════════════════════════════════════════════
 if __name__ == "__main__":
     DAILY_PATH   = "data/processed/Cleaned_Daily_Final.csv"
     MONTHLY_PATH = "data/processed/Cleaned_Monthly_Final.csv"
+    
     OUT = Path("results/mcis")
     OUT.mkdir(parents=True, exist_ok=True)
+    
+    # Create a dedicated directory for the serialized models
+    MODELS_OUT = OUT / "models"
+    MODELS_OUT.mkdir(parents=True, exist_ok=True)
 
     daily, monthly = load_data(DAILY_PATH, MONTHLY_PATH)
 
@@ -978,17 +982,25 @@ if __name__ == "__main__":
 
     # ── Experiment A: ET₀ estimation ────────────────────────────────────
     et0_res, et0_mdl, et0_feats = experiment_et0(daily, monthly, OUT)
+    best_et0 = et0_res.iloc[0]['Model']
+    joblib.dump(et0_mdl[best_et0], MODELS_OUT / f"et0_best_{best_et0}.joblib")
 
     # ── Experiment B: Rain prediction ───────────────────────────────────
     rain_res, rain_mdl = experiment_rain_classifier(daily, OUT)
+    best_rain = rain_res.iloc[0]['Model']
+    joblib.dump(rain_mdl[best_rain], MODELS_OUT / f"rain_best_{best_rain}.joblib")
 
     # ── Experiment C: Crop Stress Index forecast ─────────────────────────
     csi_res, csi_mdl  = experiment_csi_forecast(daily, OUT)
+    best_csi = csi_res.iloc[0]['Model']
+    joblib.dump(csi_mdl[best_csi], MODELS_OUT / f"csi_best_{best_csi}.joblib")
 
     # ── Experiment D: Multi-target ───────────────────────────────────────
     mt_mdl = experiment_multitarget(daily, OUT)
+    joblib.dump(mt_mdl, MODELS_OUT / "multitarget_base.joblib")
 
     print("\n" + "="*60)
     print("ALL MCIS EXPERIMENTS COMPLETE")
-    print(f"Outputs → {OUT}")
+    print(f"Visualizations & Logs → {OUT}")
+    print(f"Serialized Models     → {MODELS_OUT}")
     print("="*60)
