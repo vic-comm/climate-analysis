@@ -1,0 +1,15 @@
+\begin{table}[htbp]
+  \centering
+  \caption{ET$_0$ estimation model comparison — Ibadan 2021–2025}
+  \label{tab:et0}
+  \begin{tabular}{lcccccc}
+    \toprule
+    Model & RMSE & MAE & R$^2$ & NSE & KGE & MBE \\
+    \midrule
+    Ridge & \textbf{0.3354} & \textbf{0.2645} & \textbf{0.9295} & \textbf{0.9295} & \textbf{0.9589} & -0.0388 \\
+    XGBoost & 0.3469 & 0.2712 & 0.9246 & 0.9246 & 0.9330 & -0.0747 \\
+    RF & 0.3480 & 0.2736 & 0.9241 & 0.9241 & 0.9265 & 0.0808 \\
+    LightGBM & 0.3876 & 0.3074 & 0.9059 & 0.9059 & 0.9196 & -0.1486 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
